@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Copy, Trash2, Type } from "lucide-react";
+import { Copy, Trash2, Type, RotateCcw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 type CaseType = 
@@ -20,10 +20,20 @@ type CaseType =
 
 const Index = () => {
   const [text, setText] = useState("");
+  const [originalText, setOriginalText] = useState("");
   const [charCount, setCharCount] = useState(0);
   const [wordCount, setWordCount] = useState(0);
   const [hasConverted, setHasConverted] = useState(false);
+  const [visitorCount, setVisitorCount] = useState(0);
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Track visitor on component mount
+    const visitCount = parseInt(localStorage.getItem("visitCount") || "0", 10);
+    const newCount = visitCount + 1;
+    localStorage.setItem("visitCount", newCount.toString());
+    setVisitorCount(newCount);
+  }, []);
 
   useEffect(() => {
     setCharCount(text.length);
@@ -32,6 +42,7 @@ const Index = () => {
 
   const handleTextChange = (value: string) => {
     setText(value);
+    setOriginalText(value);
     setHasConverted(false);
   };
 
@@ -121,7 +132,17 @@ const Index = () => {
 
   const clearText = () => {
     setText("");
+    setOriginalText("");
     setHasConverted(false);
+  };
+
+  const revertText = () => {
+    setText(originalText);
+    setHasConverted(false);
+    toast({
+      title: "Reverted!",
+      description: "Text reverted to original input",
+    });
   };
 
   const caseButtons = [
@@ -266,6 +287,15 @@ const Index = () => {
                     Copy Text
                   </Button>
                   <Button
+                    onClick={revertText}
+                    variant="outline"
+                    className="flex-1 shadow-soft hover:shadow-medium transition-smooth"
+                    disabled={!hasConverted || !originalText}
+                  >
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    Revert
+                  </Button>
+                  <Button
                     onClick={clearText}
                     variant="outline"
                     className="flex-1 shadow-soft hover:shadow-medium transition-smooth"
@@ -338,8 +368,13 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="border-t border-border bg-card/50 backdrop-blur-sm mt-12">
-        <div className="container mx-auto px-4 py-6 text-center text-sm text-muted-foreground">
-          <p>© 2024 Text Case Converter. Transform your text with ease.</p>
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col items-center justify-center gap-2 text-center text-sm text-muted-foreground">
+            <p>© 2024 Text Case Converter. Transform your text with ease.</p>
+            <p className="text-xs font-medium">
+              👥 Total Visitors: <span className="text-primary font-bold">{visitorCount.toLocaleString()}</span>
+            </p>
+          </div>
         </div>
       </footer>
     </div>
