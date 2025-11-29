@@ -121,13 +121,38 @@ const Index = () => {
     setHasConverted(true);
   };
 
-  const copyToClipboard = () => {
+  const copyToClipboard = async () => {
     if (!text) return;
-    navigator.clipboard.writeText(text);
-    toast({
-      title: "Copied!",
-      description: "Text copied to clipboard",
-    });
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+        toast({
+          title: "Copied!",
+          description: "Text copied to clipboard",
+        });
+        return;
+      }
+
+      // Fallback for older browsers: use execCommand
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      toast({
+        title: "Copied!",
+        description: "Text copied to clipboard",
+      });
+    } catch (error) {
+      console.error("Copy failed:", error);
+      toast({
+        title: "Copy failed",
+        description: "Unable to copy text to clipboard",
+      });
+    }
   };
 
   const clearText = () => {
@@ -281,7 +306,7 @@ const Index = () => {
                     onClick={copyToClipboard}
                     variant="outline"
                     className="flex-1 shadow-soft hover:shadow-medium transition-smooth"
-                    disabled={!text || !hasConverted}
+                    disabled={!text}
                   >
                     <Copy className="w-4 h-4 mr-2" />
                     Copy Text
