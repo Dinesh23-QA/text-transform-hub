@@ -22,12 +22,18 @@ const Index = () => {
   const [text, setText] = useState("");
   const [charCount, setCharCount] = useState(0);
   const [wordCount, setWordCount] = useState(0);
+  const [hasConverted, setHasConverted] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     setCharCount(text.length);
     setWordCount(text.trim() === "" ? 0 : text.trim().split(/\s+/).length);
   }, [text]);
+
+  const handleTextChange = (value: string) => {
+    setText(value);
+    setHasConverted(false);
+  };
 
   const convertCase = (type: CaseType) => {
     if (!text.trim()) return;
@@ -101,6 +107,7 @@ const Index = () => {
     }
     
     setText(converted);
+    setHasConverted(true);
   };
 
   const copyToClipboard = () => {
@@ -114,6 +121,7 @@ const Index = () => {
 
   const clearText = () => {
     setText("");
+    setHasConverted(false);
   };
 
   const caseButtons = [
@@ -218,10 +226,10 @@ const Index = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="grid lg:grid-cols-12 gap-6">
+      <main className="container mx-auto px-4 py-8 max-w-4xl">
+        <div>
           {/* Main Content Area */}
-          <div className="lg:col-span-9">
+          <div>
             {/* Text Input Card */}
             <Card className="shadow-medium border-border/50 mb-6">
               <CardHeader>
@@ -243,7 +251,7 @@ const Index = () => {
               <CardContent className="space-y-4">
                 <Textarea
                   value={text}
-                  onChange={(e) => setText(e.target.value)}
+                  onChange={(e) => handleTextChange(e.target.value)}
                   placeholder="Start typing or paste your text here..."
                   className="min-h-[300px] text-base resize-none shadow-soft border-input focus:border-primary transition-smooth font-mono"
                 />
@@ -252,7 +260,7 @@ const Index = () => {
                     onClick={copyToClipboard}
                     variant="outline"
                     className="flex-1 shadow-soft hover:shadow-medium transition-smooth"
-                    disabled={!text}
+                    disabled={!text || !hasConverted}
                   >
                     <Copy className="w-4 h-4 mr-2" />
                     Copy Text
@@ -293,25 +301,6 @@ const Index = () => {
               </CardContent>
             </Card>
           </div>
-
-          {/* Ad Spaces */}
-          <div className="lg:col-span-3 space-y-6">
-            <Card className="shadow-medium border-border/50">
-              <CardContent className="p-6">
-                <div className="bg-muted rounded-lg h-[250px] flex items-center justify-center border-2 border-dashed border-border">
-                  <p className="text-muted-foreground text-sm font-medium">Ad Space 1</p>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="shadow-medium border-border/50">
-              <CardContent className="p-6">
-                <div className="bg-muted rounded-lg h-[250px] flex items-center justify-center border-2 border-dashed border-border">
-                  <p className="text-muted-foreground text-sm font-medium">Ad Space 2</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </div>
 
         {/* Text Transformation Guide */}
@@ -345,15 +334,6 @@ const Index = () => {
             ))}
           </div>
         </section>
-
-        {/* Bottom Ad Space */}
-        <Card className="shadow-medium border-border/50 mt-12">
-          <CardContent className="p-6">
-            <div className="bg-muted rounded-lg h-[120px] flex items-center justify-center border-2 border-dashed border-border">
-              <p className="text-muted-foreground text-sm font-medium">Bottom Ad Space</p>
-            </div>
-          </CardContent>
-        </Card>
       </main>
 
       {/* Footer */}
