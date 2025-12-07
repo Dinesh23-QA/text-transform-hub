@@ -42,3 +42,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist
           cname: textmagictool.com
+          keep_files: true              # ✅ Preserve CNAME file in gh-pages branch
+
+      # 7️⃣ Verify deployed CNAME
+      - name: Check deployed CNAME
+        run: |
+          git fetch origin gh-pages
+          git checkout origin/gh-pages -- CNAME
+          cat CNAME || echo "CNAME not found in deployed branch"
