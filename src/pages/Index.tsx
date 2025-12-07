@@ -394,11 +394,18 @@ const Index = () => {
       {/* Footer */}
       <footer className="border-t border-border bg-card/50 backdrop-blur-sm mt-12">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col items-center justify-center gap-2 text-center text-sm text-muted-foreground">
-            <p>© 2024 Text Case Converter. Transform your text with ease.</p>
+          <div className="flex flex-col items-center justify-center gap-4 text-center text-sm text-muted-foreground">
+            <p>© 2025 Text Case Converter. All rights reserved.</p>
             <p className="text-xs font-medium">
               👥 Total Visitors: <span className="text-primary font-bold">{visitorCount.toLocaleString()}</span>
             </p>
+            <div className="flex gap-4 text-xs flex-wrap justify-center">
+              <a href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</a>
+              <span>|</span>
+              <a href="/terms-of-service" className="hover:text-primary transition-colors">Terms of Service</a>
+              <span>|</span>
+              <a href="/contact" className="hover:text-primary transition-colors">Contact</a>
+            </div>
           </div>
         </div>
       </footer>
