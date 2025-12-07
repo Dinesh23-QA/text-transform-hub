@@ -1,0 +1,19 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradientPrimary" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background rounded square -->
+  <rect width="32" height="32" rx="6" fill="url(#gradientPrimary)" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.1))"/>
+  
+  <!-- Type icon (T shape) -->
+  <g transform="translate(16, 16)">
+    <!-- Top bar of T -->
+    <rect x="-8" y="-8" width="16" height="3" fill="white" rx="1.5"/>
+    <!-- Vertical stem of T -->
+    <rect x="-2.5" y="-5" width="5" height="12" fill="white" rx="2.5"/>
+  </g>
+</svg>
