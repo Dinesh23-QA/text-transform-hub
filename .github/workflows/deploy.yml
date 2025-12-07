@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages (official)
+name: Deploy React + vite to GitHub Pages (official)
 
 on:
   push:
@@ -55,4 +55,4 @@ jobs:
           path: ./dist
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v
