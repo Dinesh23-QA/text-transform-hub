@@ -35,3 +35,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist
           cname: textmagictool.com
+          keep_files: true   # << This preserves your CNAME file
